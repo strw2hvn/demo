@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--General information for the Project Parent pom file which will be inherited by child modules-->
+    <groupId>com.automation</groupId>
+    <artifactId>selenium-demo</artifactId>
+    <packaging>pom</packaging>
+    <!--<version>${project.version}</version>-->
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Selenium Framework demo</name>
+
+    <!--2 modules including: common and project bases on the existing selenium framework-->
+    <modules>
+        <module>project</module>
+    </modules>
+
+    <!--properties most likely is the container of the version of dependencies-->
+    <properties>
+        <selenium.version>3.0.1</selenium.version>
+        <poi.version>3.14</poi.version>
+        <seleniumserver.version>2.53.0</seleniumserver.version>
+        <shutter.version>0.4</shutter.version>
+        <qc.version>9.2</qc.version>
+        <TestNG.version>6.0</TestNG.version>
+        <javamail.version>1.4.6</javamail.version>
+        <!--<ojdbc.version>11.1.0.7.0</ojdbc.version>-->
+        <log4j.version>2.7</log4j.version>
+        <jsoup.version>1.8.3</jsoup.version>
+        <com4j.version>2.0</com4j.version>
+        <project.version>1.0.0-SNAPSHOT</project.version>
+        <jxl.version>2.6</jxl.version>
+        <otaclient.version>9.2</otaclient.version>
+        <appium.version>4.1.2</appium.version>
+        <!--        <appium.version>3.2.0</appium.version>-->
+    </properties>
+
+    <!--All the dependencies from existing framework-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-java</artifactId>
+                <version>${selenium.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-server-standalone</artifactId>
+                <version>${seleniumserver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sourceforge.jexcelapi</groupId>
+                <artifactId>jxl</artifactId>
+                <version>${jxl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${TestNG.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>${javamail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.appium</groupId>
+                <artifactId>java-client</artifactId>
+                <version>${appium.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <build>
+
+        <!--Basic build elements-->
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <scriptSourceDirectory>${basedir}/src/main/scripts</scriptSourceDirectory>
+        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+        <outputDirectory>${basedir}/target/classes</outputDirectory>
+        <testOutputDirectory>${basedir}/target/test-classes</testOutputDirectory>
+
+        <resources>
+            <resource>
+                <targetPath>${basedir}/resources</targetPath>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources</directory>
+            </resource>
+        </resources>
+
+        <!--Basic plugins management for the projects/modules-->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.6.1</version>
+                    <configuration>
+                        <verbose>true</verbose>
+                        <executable>${env.JAVA_HOME}/bin/javac</executable>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <!-- <classpathPrefix>lib</classpathPrefix> -->
+                                <mainClass>com.rbc.automation.project.App</mainClass>
+                            </manifest>
+                        </archive>
+
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>packageStep</id>
+                            <phase>package</phase>
+                        </execution>
+                        <execution>
+                            <id>installStep</id>
+                            <phase>install</phase>
+                        </execution>
+                    </executions>
+
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.0.0</version>
+
+                </plugin>
+                <!--Assembly plugin is for future usage-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <configuration>
+                        <appendAssemblyId>false</appendAssemblyId>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>packageStep</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>installStep</id>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.4</version>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
+    </build>
+
+</project>
